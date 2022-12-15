@@ -16,19 +16,13 @@ struct Artist: Decodable, Identifiable {
     let name: String
     let popularity: Int
     let uri: String
-    let images: [ArtistImage]
+    let images: [SpotifyImage]
     let href: String
     let genres: [String]
-    let followers: followers
+    let followers: Follwers
 }
 
-struct ArtistImage: Decodable {
-    let height: Int
-    let width: Int
-    let url: String
-}
-
-struct followers: Decodable {
+struct Follwers: Decodable {
     let href: String?
     let total: Int
 }

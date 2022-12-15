@@ -11,10 +11,10 @@ private let kArtist = Artist(id: "AAAA",
                              name: "Leiva",
                              popularity: 80,
                              uri: "example",
-                             images: [ArtistImage(height: 640, width: 640, url: "https://i.scdn.co/image/ab6761610000e5eb207b21f3ed0ee96adce3166a")],
+                             images: [SpotifyImage(height: 640, width: 640, url: "https://i.scdn.co/image/ab6761610000e5eb207b21f3ed0ee96adce3166a")],
                              href: "example",
                              genres: ["Rock"],
-                             followers: followers(href: "", total: 845050))
+                             followers: Follwers(href: "", total: 845050))
 
 struct RoundedSquare: View {
     
