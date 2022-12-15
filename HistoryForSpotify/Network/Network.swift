@@ -18,6 +18,7 @@ class Network: NSObject, ObservableObject {
     var oauthswift: OAuth2Swift
     
     @Published var artists: [Artist] = []
+    @Published var tracks: [Track] = []
     
     override init() {
         self.oauthswift = OAuth2Swift(
@@ -48,6 +49,7 @@ class Network: NSObject, ObservableObject {
                 print(credential.oauthToken)
                 self.isAuthorized = true
                 self.getTopArtists()
+                self.getTopTracks()
             case .failure(let error):
                 print(error)
             }
@@ -60,6 +62,18 @@ class Network: NSObject, ObservableObject {
             case .success(let response):
                 let data: Artists = try! JSONDecoder().decode(Artists.self, from: response.data)
                 self.artists = data.items
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func getTopTracks() {
+        oauthswift.client.get("https://api.spotify.com/v1/me/top/tracks", parameters: ["limit": 50]) { result in
+            switch result {
+            case .success(let response):
+                let data: Tracks = try! JSONDecoder().decode(Tracks.self, from: response.data)
+                self.tracks = data.items
             case .failure(let error):
                 print(error)
             }
