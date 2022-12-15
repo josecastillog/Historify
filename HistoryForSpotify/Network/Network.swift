@@ -17,7 +17,7 @@ class Network: NSObject, ObservableObject {
     var keys = Secret()
     var oauthswift: OAuth2Swift
     
-    var artists: [Artist] = []
+    @Published var artists: [Artist] = []
     
     override init() {
         self.oauthswift = OAuth2Swift(
@@ -55,7 +55,7 @@ class Network: NSObject, ObservableObject {
     }
     
     func getTopArtists() {
-        oauthswift.client.get("https://api.spotify.com/v1/me/top/artists") { result in
+        oauthswift.client.get("https://api.spotify.com/v1/me/top/artists", parameters: ["limit": 50]) { result in
             switch result {
             case .success(let response):
                 let data: Artists = try! JSONDecoder().decode(Artists.self, from: response.data)
@@ -64,12 +64,6 @@ class Network: NSObject, ObservableObject {
             case .failure(let error):
                 print(error)
             }
-        }
-    }
-    
-    func printAllArtists() {
-        for artist in self.artists {
-            print(artist.followers.total)
         }
     }
     
