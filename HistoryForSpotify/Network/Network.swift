@@ -13,8 +13,11 @@ class Network: NSObject, ObservableObject {
     
     static let shared = Network()
     
+    @Published var isAuthorized = false
     var keys = Secret()
     var oauthswift: OAuth2Swift
+    
+    var artists: [Artist] = []
     
     override init() {
         self.oauthswift = OAuth2Swift(
@@ -25,8 +28,6 @@ class Network: NSObject, ObservableObject {
             responseType: "code"
         )
     }
-    
-    @Published var isAuthorized = false
     
     func authorize() {
 
@@ -57,11 +58,18 @@ class Network: NSObject, ObservableObject {
         oauthswift.client.get("https://api.spotify.com/v1/me/top/artists") { result in
             switch result {
             case .success(let response):
-                let dataString = response.string
-                print(dataString!)
+                let data: Artists = try! JSONDecoder().decode(Artists.self, from: response.data)
+                self.artists = data.items
+                self.printAllArtists()
             case .failure(let error):
                 print(error)
             }
+        }
+    }
+    
+    func printAllArtists() {
+        for artist in self.artists {
+            print(artist.followers.total)
         }
     }
     
