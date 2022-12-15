@@ -16,7 +16,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             if(network.isAuthorized) {
-                Text("Hello World")
+                TabbarView()
             } else {
                 AuthViewContainer()
             }
@@ -41,10 +41,4 @@ struct AuthViewContainer : UIViewControllerRepresentable {
         
     }
     
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
 }
