@@ -60,7 +60,6 @@ class Network: NSObject, ObservableObject {
             case .success(let response):
                 let data: Artists = try! JSONDecoder().decode(Artists.self, from: response.data)
                 self.artists = data.items
-                self.printAllArtists()
             case .failure(let error):
                 print(error)
             }
