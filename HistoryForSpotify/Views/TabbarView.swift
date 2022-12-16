@@ -14,7 +14,7 @@ struct TabbarView: View {
                 .tabItem {
                     Label("Artists", systemImage: "person.fill")
                 }
-            Text("Tracks")
+            TracksView()
                 .tabItem {
                     Label("Tracks", systemImage: "music.note.list")
                 }

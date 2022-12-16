@@ -35,6 +35,7 @@ struct ArtistView: View {
             }
         }
         .padding(.horizontal, 8)
+        .padding(.vertical)
     }
 }
 

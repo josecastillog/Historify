@@ -25,7 +25,7 @@ struct RoundedSquare: View {
         ZStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 0) {
                 AsyncImage(
-                    url: URL(string: artist.images[0].url),
+                    url: URL(string: artist.images[1].url),
                     content: { image in
                         image.resizable()
                              .aspectRatio(contentMode: .fill)
