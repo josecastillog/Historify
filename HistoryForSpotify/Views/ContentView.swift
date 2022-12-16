@@ -24,6 +24,9 @@ struct ContentView: View {
         .onOpenURL {url in
             OAuthSwift.handle(url: url)
         }
+        .onAppear {
+            network.read()
+        }
     }
     
 }
