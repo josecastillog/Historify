@@ -7,6 +7,29 @@
 
 import SwiftUI
 
+// Constants for preview
+private let kImage = SpotifyImage(height: 64, width: 64, url: "")
+
+private let kArtist = GenericArtist(id: "", name: "", uri: "", href: "")
+
+private let kAlbum = Album(id: "",
+                          name: "",
+                          release_date: "",
+                          total_tracks: 10,
+                          uri: "",
+                          artists: [kArtist],
+                          images: [kImage, kImage, kImage])
+
+private let kTrack = Track(id: "",
+                          name: "",
+                          popularity: 80,
+                          preview_url: "",
+                          track_number: 2,
+                          uri: "",
+                          album: kAlbum,
+                          artists: [kArtist],
+                          duration_ms: 2000)
+
 struct TrackRowView: View {
     
     let trackNum: Int
@@ -15,12 +38,12 @@ struct TrackRowView: View {
     var body: some View {
         
         ZStack(alignment: .leading) {
-            HStack(spacing: 12) {
-                Text("\(trackNum+1).")
-                    .font(.largeTitle)
+            HStack(spacing: 8) {
+                Text("#\(trackNum+1)")
+                    .font(.title)
                     .bold()
                     .foregroundColor(Color("WhiteBlack"))
-                    .frame(width: 55)
+                    .frame(width: 58)
                 HStack(spacing: 16) {
                     AsyncImage(
                         url: URL(string: track.album.images[2].url),
@@ -39,29 +62,27 @@ struct TrackRowView: View {
                         HStack(spacing: 6) {
                             Text(track.name)
                                 .font(.headline).bold()
-                                .foregroundColor(Color("WhiteBlack"))
+                                .foregroundColor(Color(.white))
                                 .lineLimit(1)
-//                                .fixedSize(horizontal: true, vertical: true)
                         }
                         Text(track.artists[0].name)
                             .font(.subheadline)
-                            .foregroundColor(Color("WhiteBlack"))
+                            .foregroundColor(Color(.white))
                             .lineLimit(1)
-//                            .fixedSize(horizontal: true, vertical: true)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, 12)
                 .padding(.horizontal, 15)
-                .background(Color(.systemGray6))
+                .background(Color("CustomGray"))
                 .clipShape(RoundedRectangle(cornerRadius: 25))
             }
         }
     }
 }
 
-//struct TrackRowView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TrackRowView()
-//    }
-//}
+struct TrackRowView_Previews: PreviewProvider {
+    static var previews: some View {
+        TrackRowView(trackNum: 1, track: kTrack)
+    }
+}

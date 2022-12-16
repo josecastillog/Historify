@@ -12,7 +12,7 @@ struct Tracks: Decodable {
 }
 
 
-class Track: Decodable {
+struct Track: Decodable, Identifiable {
     
     let id: String
     let name: String

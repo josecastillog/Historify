@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GenericArtist: Decodable {
+struct GenericArtist: Decodable {
     
     let id: String
     let name: String

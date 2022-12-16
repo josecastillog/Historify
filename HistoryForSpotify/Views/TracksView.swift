@@ -13,10 +13,7 @@ struct TracksView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            LazyVStack(alignment: .leading, spacing: 12) {
-//                ForEach(1..<20) { _ in
-//                    TrackRowView()
-//                }
+            LazyVStack(alignment: .leading, spacing: 8) {
                 ForEach(Array(zip(network.tracks.indices, network.tracks)), id: \.0) { index, track in
                     VStack {
                         TrackRowView(trackNum: index, track: track)
@@ -24,7 +21,8 @@ struct TracksView: View {
                 }
             }
             .padding(.vertical, 15)
-            .padding(.horizontal, 10)
+            .padding(.trailing, 6)
+            .padding(.leading, 8)
         }
     }
 }
