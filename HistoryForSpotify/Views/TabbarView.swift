@@ -27,6 +27,11 @@ struct TabbarView: View {
                     Label("Settings", systemImage: "gear")
                 }
         }
+        .onAppear {
+            let tabBarAppearance = UITabBarAppearance()
+            tabBarAppearance.configureWithDefaultBackground()
+            UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        }
     }
 }
 

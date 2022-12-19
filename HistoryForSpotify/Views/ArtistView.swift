@@ -19,28 +19,85 @@ private let kArtist = Artist(id: "AAAA",
 struct ArtistView: View {
     
     @StateObject var network = Network.shared
-    
-    let columns = [GridItem(),
-                   GridItem(),
-                   GridItem()]
+    @State private var selectedFilter: FilterViewModel = .weeks
+    @Namespace var animation
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            LazyVGrid(columns: columns) {
-                ForEach(Array(zip(network.artists.indices, network.artists)), id: \.0) { index, artist in
-                    VStack {
-                        RoundedSquare(artist: artist, number: index)
-                    }
-                }
+        VStack(spacing: 0) {
+            filterBar
+                .padding(.top, 6)
+            switch selectedFilter {
+            case .weeks:
+                ArtistScrollView(artists: network.artistsWeeks)
+            case .months:
+                ArtistScrollView(artists: network.artistsMonths)
+            case .allTime:
+                ArtistScrollView(artists: network.artistsAllTime)
             }
         }
-        .padding(.horizontal, 8)
-        .padding(.top)
     }
 }
 
 struct ArtistView_Previews: PreviewProvider {
     static var previews: some View {
         ArtistView()
+    }
+}
+
+extension ArtistView {
+    
+    var filterBar : some View {
+        HStack {
+            ForEach(FilterViewModel.allCases, id: \.rawValue) { item in
+                VStack {
+                    Text(item.title)
+                        .font(.subheadline)
+                        .fontWeight(selectedFilter == item ? .semibold : .regular)
+                        .foregroundColor(selectedFilter == item ? Color("WhiteBlack") : .gray)
+                    
+                    if selectedFilter == item {
+                        Capsule()
+                            .foregroundColor(Color("CustomGreen"))
+                            .frame(height: 3)
+                            .matchedGeometryEffect(id: "filter", in: animation)
+                    } else {
+                        Capsule()
+                            .foregroundColor(Color(.clear))
+                            .frame(height: 3)
+                    }
+                }.onTapGesture {
+                    withAnimation(.default) {
+                        self.selectedFilter = item
+                    }
+                }
+            }
+        }
+        .overlay(Divider().offset(x: 0, y: 16))
+    }
+    
+}
+
+struct ArtistScrollView: View {
+    
+    let artists: [Artist]
+    
+    var body: some View {
+        
+        let columns = [GridItem(),
+                       GridItem(),
+                       GridItem()]
+        
+        ScrollView(showsIndicators: false) {
+            LazyVGrid(columns: columns) {
+                ForEach(Array(zip(artists.indices, artists)), id: \.0) { index, artist in
+                    VStack {
+                        RoundedSquare(artist: artist, number: index)
+                    }
+                    .padding(.top)
+                }
+            }
+            .padding(.bottom)
+        }
+        .padding(.horizontal, 8)
     }
 }

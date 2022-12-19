@@ -17,7 +17,7 @@ struct Track: Decodable, Identifiable {
     let id: String
     let name: String
     let popularity: Int
-    let preview_url: String
+    let preview_url: String?
     let track_number: Int
     let uri: String
     let album: Album

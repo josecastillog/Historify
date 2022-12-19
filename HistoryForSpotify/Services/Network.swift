@@ -20,8 +20,12 @@ class Network: NSObject, ObservableObject {
     var oauthswift: OAuth2Swift
     
     @Published var isAuthorized = true
-    @Published var artists: [Artist] = []
-    @Published var tracks: [Track] = []
+    @Published var artistsWeeks: [Artist] = []
+    @Published var artistsMonths: [Artist] = []
+    @Published var artistsAllTime: [Artist] = []
+    @Published var tracksWeeks: [Track] = []
+    @Published var tracksMonths: [Track] = []
+    @Published var tracksAllTime: [Track] = []
     
     override init() {
         self.oauthswift = OAuth2Swift(
@@ -75,11 +79,23 @@ class Network: NSObject, ObservableObject {
     }
     
     func getTopArtists() {
-        oauthswift.client.get("https://api.spotify.com/v1/me/top/artists", parameters: ["limit": 50]) { result in
+        self.getTopArtistsWeeks()
+        self.getTopArtistsMonths()
+        self.getTopArtistsAllTime()
+    }
+    
+    func getTopTracks() {
+        self.getTopTracksWeeks()
+        self.getTopTracksMonths()
+        self.getTopTracksAllTime()
+    }
+    
+    func getTopArtistsWeeks() {
+        oauthswift.client.get("https://api.spotify.com/v1/me/top/artists", parameters: ["limit": 50, "time_range": "short_term"]) { result in
             switch result {
             case .success(let response):
                 let data: Artists = try! JSONDecoder().decode(Artists.self, from: response.data)
-                self.artists = data.items
+                self.artistsWeeks = data.items
             case .failure(let error):
                 if case .tokenExpired = error {
                     self.refreshToken()
@@ -90,12 +106,76 @@ class Network: NSObject, ObservableObject {
         }
     }
     
-    func getTopTracks() {
-        oauthswift.client.get("https://api.spotify.com/v1/me/top/tracks", parameters: ["limit": 50]) { result in
+    func getTopArtistsMonths() {
+        oauthswift.client.get("https://api.spotify.com/v1/me/top/artists", parameters: ["limit": 50, "time_range": "medium_term"]) { result in
+            switch result {
+            case .success(let response):
+                let data: Artists = try! JSONDecoder().decode(Artists.self, from: response.data)
+                self.artistsMonths = data.items
+            case .failure(let error):
+                if case .tokenExpired = error {
+                    self.refreshToken()
+                } else {
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func getTopArtistsAllTime() {
+        oauthswift.client.get("https://api.spotify.com/v1/me/top/artists", parameters: ["limit": 50, "time_range": "long_term"]) { result in
+            switch result {
+            case .success(let response):
+                let data: Artists = try! JSONDecoder().decode(Artists.self, from: response.data)
+                self.artistsAllTime = data.items
+            case .failure(let error):
+                if case .tokenExpired = error {
+                    self.refreshToken()
+                } else {
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func getTopTracksWeeks() {
+        oauthswift.client.get("https://api.spotify.com/v1/me/top/tracks", parameters: ["limit": 50, "time_range": "short_term"]) { result in
             switch result {
             case .success(let response):
                 let data: Tracks = try! JSONDecoder().decode(Tracks.self, from: response.data)
-                self.tracks = data.items
+                self.tracksWeeks = data.items
+            case .failure(let error):
+                if case .tokenExpired = error {
+                    self.refreshToken()
+                } else {
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func getTopTracksMonths() {
+        oauthswift.client.get("https://api.spotify.com/v1/me/top/tracks", parameters: ["limit": 50, "time_range": "medium_term"]) { result in
+            switch result {
+            case .success(let response):
+                let data: Tracks = try! JSONDecoder().decode(Tracks.self, from: response.data)
+                self.tracksMonths = data.items
+            case .failure(let error):
+                if case .tokenExpired = error {
+                    self.refreshToken()
+                } else {
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func getTopTracksAllTime() {
+        oauthswift.client.get("https://api.spotify.com/v1/me/top/tracks", parameters: ["limit": 50, "time_range": "long_term"]) { result in
+            switch result {
+            case .success(let response):
+                let data: Tracks = try! JSONDecoder().decode(Tracks.self, from: response.data)
+                self.tracksAllTime = data.items
             case .failure(let error):
                 if case .tokenExpired = error {
                     self.refreshToken()
