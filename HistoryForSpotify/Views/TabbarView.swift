@@ -22,7 +22,7 @@ struct TabbarView: View {
                 .tabItem {
                     Label("Albums", systemImage: "opticaldisc")
                 }
-            Text("Settings")
+            SettingsView()
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }

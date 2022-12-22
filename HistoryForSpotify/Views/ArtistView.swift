@@ -88,7 +88,7 @@ struct ArtistScrollView: View {
                        GridItem()]
         
         ScrollView(showsIndicators: false) {
-            LazyVGrid(columns: columns) {
+            LazyVGrid(columns: columns, spacing: 0) {
                 ForEach(Array(zip(artists.indices, artists)), id: \.0) { index, artist in
                     VStack {
                         RoundedSquare(artist: artist, number: index)
